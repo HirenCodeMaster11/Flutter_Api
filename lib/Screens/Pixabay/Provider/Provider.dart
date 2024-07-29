@@ -15,8 +15,6 @@ class PixabayProvider extends ChangeNotifier {
   }
   Future<Pixabay?> fromMap(String img) async {
 
-    print('api called');
-
     final data = await apiHelper.fetchApiData(img);
     pixabay = Pixabay.fromJson(data);
 
