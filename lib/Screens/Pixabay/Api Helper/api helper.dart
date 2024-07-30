@@ -3,25 +3,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-class ApiHelper
+class Helper
 {
-
   Future<Map> fetchApiData(String search)
   async {
-    String api = 'https://pixabay.com/api/?key=45125781-1d67fb2dd49fcda36df785f07&q=$search&image_type=photo';
-    Uri url = Uri.parse(api);
+    Uri url = Uri.parse('https://pixabay.com/api/?key=45125752-380a2f3338a03301a149d0b54&q=$search&image_type=photo');
 
     Response response = await http.get(url);
-
     if(response.statusCode == 200)
-      {
-        final json = response.body;
-        final Map data = jsonDecode(json);
-        return data;
-      }
-    else
-      {
-        return{};
-      }
+    {
+      final json = response.body;
+      final Map data = jsonDecode(json);
+      return data;
+    }
+    else {
+      return {};
+    }
   }
 }

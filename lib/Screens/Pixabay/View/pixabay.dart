@@ -1,85 +1,76 @@
+import 'package:api/Recipes%20App/Screens/Detail%20Screen/Detail%20Screen.dart';
+import 'package:api/Screens/Pixabay/View/Detail%20Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Modal/pixabayModal.dart';
 import '../Provider/Provider.dart';
-// Ensure you have the correct path to your provider
 
-TextEditingController txtImg = TextEditingController();
-class PixabayScreen extends StatelessWidget {
-  const PixabayScreen({super.key});
+TextEditingController txtSearch = TextEditingController();
+
+class SearchPage extends StatelessWidget {
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    PixabayProvider pixabayProviderTrue =
-        Provider.of<PixabayProvider>(context, listen: true);
-    PixabayProvider pixabayProviderFalse =
-        Provider.of<PixabayProvider>(context, listen: false);
+    HomeProvider homeProvider =Provider.of<HomeProvider>(context,listen: false);
+    HomeProvider homeProviderTrue =Provider.of<HomeProvider>(context,listen: true);
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          controller: txtImg,
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12)
+        title: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: txtSearch,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  label: Text('Search Images'),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
             ),
-          ),
+            IconButton(onPressed: () {
+              // homeProvider.fromMap(txtSearch.text);
+              homeProvider.searchImg(txtSearch.text);
+            }, icon: Icon(Icons.search)),
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              pixabayProviderFalse.searchImage(txtImg.text);
-            },
-            icon: Icon(Icons.search),
-          ),
-        ],
       ),
-      body: FutureBuilder<Pixabay?>(
-        future: Provider.of<PixabayProvider>(context, listen: false)
-            .fromMap(pixabayProviderTrue.search),
+      body: FutureBuilder(
+        future:
+        Provider.of<HomeProvider>(context, listen: false).fromMap(homeProviderTrue.search),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.hasData) {
+            SearchModal? search = snapshot.data;
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                itemCount: search!.hits.length,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PixaDetailScreen(hits: search),));
+                    homeProviderTrue.selectIndex = index;
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(10),
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                                '${search.hits[index].webformatURL}'))),
+                  ),
+                ),);
+          } else {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else {
-            Pixabay? pixabay = snapshot.data;
-            return pixabay != null
-                ? buildContent(pixabay)
-                : Center(child: Text('No data available'));
           }
         },
       ),
-    );
-  }
-
-  Widget buildContent(Pixabay pixabay) {
-    // Extract the list of Hit objects from the Pixabay object
-    List<Hit> hits = pixabay.http.cast<Hit>();
-
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Number of columns in the grid
-        childAspectRatio: 1, // Aspect ratio of the grid items
-      ),
-      itemCount: hits.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: 200,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    hits[index].web,
-                  ),
-                )),
-          ),
-        );
-      },
     );
   }
 }
