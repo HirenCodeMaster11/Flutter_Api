@@ -73,3 +73,22 @@
 
 ## Description :
 ```Explore a world of shopping with our sleek Flutter-based eCommerce app. Browse through a wide range of products, from fashion to electronics, all in one place. Enjoy a seamless shopping experience with intuitive navigation, secure checkout, and real-time order tracking. Customize your shopping with personalized recommendations and wishlists. Manage your orders and track deliveries effortlessly. Download the app now and start shopping with ease and convenience!```
+
+<h2 align="center">2. Set Wallpaper Recording </h2>
+
+<h1 align="left"></h1>
+<div align="center">
+ <video src="https://github.com/user-attachments/assets/2db1e752-1e8a-4e73-a5c8-ac10fbb3ead6" type="video/mp4"> 
+</video>
+</div>
+
+<h2 align="center">1. Set Wallpaper </h2>
+<div align="center">
+  <img height="550"  src="https://github.com/user-attachments/assets/2c64e3b2-c84f-4401-8fb5-25bb96f99f71" />
+</div>
+<div align="center">
+<a href="https://github.com/HirenCodeMaster11/Flutter_Api/blob/master/lib/Screens/Pixabay/View/Detail%20Screen.dart">-> 📂 Go To Dart File 📂 <-</a>
+</div>
+
+## Description :
+```'async_wallpaper' is a Flutter package that allows you to set wallpapers asynchronously in your Flutter applications. It supports changing wallpapers on both Android and iOS platforms. The package provides a simple API to set wallpapers from local files or URLs, making the process efficient and non-blocking. With async_wallpaper, you can easily integrate wallpaper-changing functionality into your Flutter app. It is designed to handle asynchronous operations, ensuring a smooth user experience. The package is easy to install and use, with clear documentation to guide developers through the setup and implementation process.```
